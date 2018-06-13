@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Translator</title>
+</head>
+
+<body>
+<form method="get" id="mainForm" action="/translate"><textarea id="text" form="mainForm" name="text"></textarea><input value="Translate" type="submit" id="translate"/></form>
+<div>Source language:</div><select id="langIN" form="mainForm" name="from">
+    <option>en</option>
+    <option>ru</option>
+    <option>de</option>
+    <option>fr</option>
+    <option>cs</option>
+    <option>tr</option>
+</select>
+<div>Result Language:</div><select id="langOut"form="mainForm" name="to">
+    <option>en</option>
+    <option>ru</option>
+    <option>de</option>
+    <option>fr</option>
+    <option>cs</option>
+    <option>tr</option>
+</select>
+<br><br>
+<form method="get" action="visits"><input value="Check visits" type="submit"></form>
+</body>
+</html>
