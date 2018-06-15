@@ -1,6 +1,5 @@
 package mikhail_ryazanov.translator_task.translator.work_with_yandex;
 
-
 import java.util.List;
 
 public class RequestHandler implements Runnable {

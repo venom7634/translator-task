@@ -2,7 +2,6 @@ package mikhail_ryazanov.translator_task.translator.work_with_yandex;
 
 import org.springframework.web.client.RestTemplate;
 
-
 class YandexQueryTask {
 
 
