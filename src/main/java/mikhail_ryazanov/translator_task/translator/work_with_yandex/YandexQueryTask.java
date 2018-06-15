@@ -6,7 +6,7 @@ class YandexQueryTask {
 
 
     static public String yandexQuery(String text, String lang, String url, String key) {
-
+            text = text.replaceAll("[\"']","");
             String yandexUrl = url + key
                     + "&text=" + text + "&lang=" + lang;
 
