@@ -2,20 +2,13 @@ package mikhail_ryazanov.translator_task.translator.work_with_yandex;
 
 import org.springframework.web.client.RestTemplate;
 
-import java.io.*;
-import java.util.Properties;
 
 class YandexQueryTask {
 
-     static String yandexQuery(String text, String lang) {
-        FileInputStream file;
-        Properties property = new Properties();
 
-        try {
-            file = new FileInputStream("src/main/resources/yandex.properties");
-            property.load(file);
-            text = text.replaceAll("[@'\"$#№;%&*]","");
-            String yandexUrl = property.getProperty("yandexUrl") + property.getProperty("yandexKey")
+    static public String yandexQuery(String text, String lang, String url, String key) {
+
+            String yandexUrl = url + key
                     + "&text=" + text + "&lang=" + lang;
 
             RestTemplate restTemplate = new RestTemplate();
@@ -29,9 +22,5 @@ class YandexQueryTask {
 
             return resultString;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

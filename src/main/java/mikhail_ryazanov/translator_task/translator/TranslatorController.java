@@ -20,13 +20,13 @@ import java.util.Date;
 public class TranslatorController {
 
     @Autowired
+    Transfer transfer;
+    @Autowired
     VisitsInDataBase workWithDataBase;
 
    @GetMapping("/translate")
-    public Transfer translate(HttpServletRequest request, @RequestParam("text") String text, @RequestParam("from") String from, @RequestParam("to") String to){
-       addVisitInDB(new Date().toString(),request.getRemoteAddr(),text,from,to);
-       Transfer tran = new Transfer(text,from,to);
-       return tran;
+    public String translate(HttpServletRequest request, @RequestParam("text") String text, @RequestParam("from") String from, @RequestParam("to") String to){
+       return transfer.translate(text,from,to);
     }
 
     @GetMapping("/visits")

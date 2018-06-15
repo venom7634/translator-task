@@ -13,28 +13,30 @@ public class TranslationProcessing {
     @Value("${threads.max.count}")
     private int maxCountThreads;
 
-    public static String processRequest(String text, String langPair){
+    @Value("${threads.count.words}")
+    private int countWords;
+
+    @Value("${yandex.key}")
+    private String yandexKey;
+
+    @Value("${yandex.url}")
+    private String yandexUrl;
+
+    public String processRequest(String text, String langPair){
 
         text = text.replaceAll("\r\n"," ");
         String[] words = text.split("\\s");
         ArrayList<String> arrayWords= new ArrayList<String>(Arrays.asList(words));
         arrayWords.removeAll(Arrays.asList("", null));
 
-        ConfigThreads conf = new ConfigThreads();
-        int n = conf.getCountWord() + conf.getMaxCountThreads();
-
-//        TranslationProcessing tran = new TranslationProcessing();
-//        String test = tran.maxCountThreads;
-
         int countThreads = 1;
-        int max = 4;
 
-        for (int i = 1; i < max+1;i++){
-            if(arrayWords.size()/i < 50){
+        for (int i = 1; i < maxCountThreads+1;i++){
+            if(arrayWords.size()/i < countWords){
                 countThreads = i;
                 break;
             }
-            countThreads = max;
+            countThreads = maxCountThreads;
         }
 
         RequestHandler[] threads = new RequestHandler[countThreads];
@@ -47,7 +49,7 @@ public class TranslationProcessing {
             if(endValue > arrayWords.size())
                 endValue=arrayWords.size();
             arrays[i-1] = arrayWords.subList(startValue,endValue);
-            threads[i-1] = new RequestHandler(arrays[i-1],langPair);
+            threads[i-1] = new RequestHandler(arrays[i-1],langPair,yandexUrl,yandexKey);
             threads[i-1].t.start();
         }
 
