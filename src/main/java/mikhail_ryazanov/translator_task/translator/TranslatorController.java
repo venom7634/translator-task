@@ -1,5 +1,6 @@
 package mikhail_ryazanov.translator_task.translator;
 
+import mikhail_ryazanov.translator_task.translator.work_with_yandex.TranslationProcessing;
 import mikhail_ryazanov.translator_task.visit_to_translator.Visit;
 import mikhail_ryazanov.translator_task.visit_to_translator.VisitsInDataBase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-
+import java.util.Date;
 
 
 @RestController
@@ -21,10 +22,13 @@ public class TranslatorController {
     Transfer transfer;
     @Autowired
     VisitsInDataBase workWithDataBase;
+    @Autowired
+    private TranslationProcessing translationProcessing;
 
    @GetMapping("/translate")
     public String translate(HttpServletRequest request, @RequestParam("text") String text, @RequestParam("from") String from, @RequestParam("to") String to){
-       return transfer.translate(text,from,to);
+       addVisitInDB(request.getRemoteAddr(),text,from,to);
+       return translationProcessing.processRequest(text,from+"-"+to).trim();
     }
 
     @GetMapping("/visits")
@@ -32,13 +36,13 @@ public class TranslatorController {
         return workWithDataBase.getAllVisits();
     }
 
-    private void addVisitInDB(String timeQuery, String IPClient, String text, String langIn, String langOut){
+    private void addVisitInDB(String IPClient, String text, String langIn, String langOut){
         Visit visit = new Visit();
         visit.setIPClient(IPClient);
         visit.setLangIn(langIn);
         visit.setLangOut(langOut);
         visit.setText(text);
-        visit.setTimeQuery(timeQuery);
+        visit.setTimeQuery((new Date().toString()));
         workWithDataBase.addVisitInDB(visit);
     }
 }
