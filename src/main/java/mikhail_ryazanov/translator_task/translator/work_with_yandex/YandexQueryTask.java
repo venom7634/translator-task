@@ -13,13 +13,12 @@ class YandexQueryTask {
             RestTemplate restTemplate = new RestTemplate();
             String replyYandex = restTemplate.getForObject(yandexUrl, String.class);
 
-            String resultString = replyYandex.trim();
-            resultString = resultString.substring(resultString.indexOf('[')+1);
-            resultString = resultString.substring(0,resultString.indexOf("]"));
-            resultString = resultString.substring(resultString.indexOf("\"")+1);
-            resultString = resultString.substring(0,resultString.indexOf("\""));
+            replyYandex = replyYandex.substring(replyYandex.indexOf('[')+1);
+            replyYandex = replyYandex.substring(0,replyYandex.indexOf("]"));
+            replyYandex = replyYandex.substring(replyYandex.indexOf("\"")+1);
+            replyYandex = replyYandex.substring(0,replyYandex.indexOf("\""));
 
-            return resultString;
+            return replyYandex;
 
     }
 }

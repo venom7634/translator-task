@@ -33,10 +33,8 @@ public class TranslationProcessing {
         ExecutorService executor = Executors.newFixedThreadPool(maxCountThreads);
         ArrayList<Future<String>> futures = new ArrayList<Future<String>>();
 
-        ArrayList<RequestHandler> callables = new ArrayList<RequestHandler>(arrayWords.size());
         for(String word :words){
             RequestHandler callable = new RequestHandler(word,langPair,yandexKey,yandexUrl);
-            callables.add(callable);
             Future<String> future = executor.submit(callable);
             futures.add(future);
         }

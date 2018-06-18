@@ -12,10 +12,6 @@ import java.util.Map;
 @Component
 public class VisitsInDataBase {
 
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
-
     final private JdbcTemplate jdbcTemplate;
 
     @Autowired

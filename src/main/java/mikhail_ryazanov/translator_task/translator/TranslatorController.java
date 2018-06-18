@@ -18,7 +18,7 @@ import java.util.Date;
 public class TranslatorController {
 
     @Autowired
-    VisitsInDataBase workWithDataBase;
+    private VisitsInDataBase workWithDataBase;
     @Autowired
     private TranslationProcessing translationProcessing;
 
