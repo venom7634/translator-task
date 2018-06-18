@@ -1,6 +1,5 @@
 package mikhail_ryazanov.translator_task.translator;
 
-import mikhail_ryazanov.translator_task.translator.work_with_yandex.TranslationProcessing;
 import mikhail_ryazanov.translator_task.visit_to_translator.Visit;
 import mikhail_ryazanov.translator_task.visit_to_translator.VisitsInDataBase;
 import org.springframework.beans.factory.annotation.Autowired;

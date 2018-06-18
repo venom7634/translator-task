@@ -1,5 +1,6 @@
-package mikhail_ryazanov.translator_task.translator.work_with_yandex;
+package mikhail_ryazanov.translator_task.translator;
 
+import mikhail_ryazanov.translator_task.translator.work_with_yandex.RequestHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
