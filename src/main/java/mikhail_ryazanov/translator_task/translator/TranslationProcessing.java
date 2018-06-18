@@ -6,16 +6,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Component
 public class TranslationProcessing {
 
     @Value("${threads.max.count}")
     private int maxCountThreads;
-
-    @Value("${threads.count.words}")
-    private int countWords;
 
     @Value("${yandex.key}")
     private String yandexKey;
@@ -30,43 +30,27 @@ public class TranslationProcessing {
         ArrayList<String> arrayWords= new ArrayList<String>(Arrays.asList(words));
         arrayWords.removeAll(Arrays.asList("", null));
 
-        int countThreads = 1;
+        ExecutorService executor = Executors.newFixedThreadPool(maxCountThreads);
+        ArrayList<Future<String>> futures = new ArrayList<Future<String>>();
 
-        for (int i = 1; i < maxCountThreads+1;i++){
-            if(arrayWords.size()/i < countWords){
-                countThreads = i;
-                break;
-            }
-            countThreads = maxCountThreads;
+        ArrayList<RequestHandler> callables = new ArrayList<RequestHandler>(arrayWords.size());
+        for(String word :words){
+            RequestHandler callable = new RequestHandler(word,langPair,yandexKey,yandexUrl);
+            callables.add(callable);
+            Future<String> future = executor.submit(callable);
+            futures.add(future);
         }
-
-        RequestHandler[] threads = new RequestHandler[countThreads];
-        List<String>[] arrays = new List[countThreads];
-        int step = (int) Math.ceil(((double)arrayWords.size())/countThreads);
-        for (int i = 1; i<countThreads+1;i++){
-            int startValue = step*(i-1);
-            int endValue = step*i;
-
-            if(endValue > arrayWords.size())
-                endValue=arrayWords.size();
-            arrays[i-1] = arrayWords.subList(startValue,endValue);
-            threads[i-1] = new RequestHandler(arrays[i-1],langPair,yandexUrl,yandexKey);
-            threads[i-1].t.start();
-        }
-
-        for (int i = 1; i<countThreads+1;i++){
+        String result = "";
+        for(Future fut: futures){
             try {
-                threads[i-1].t.join();
+                result+= fut.get()+" ";
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
         }
-        String result = "";
-        for (int i = 1; i<countThreads+1;i++){
-            for(String word :arrays[i-1]){
-                result+=word+" ";
-            }
-        }
+        executor.shutdown();
         return result;
     }
 

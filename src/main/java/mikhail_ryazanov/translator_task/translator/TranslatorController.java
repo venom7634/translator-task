@@ -18,8 +18,6 @@ import java.util.Date;
 public class TranslatorController {
 
     @Autowired
-    Transfer transfer;
-    @Autowired
     VisitsInDataBase workWithDataBase;
     @Autowired
     private TranslationProcessing translationProcessing;

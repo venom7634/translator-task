@@ -1,29 +1,24 @@
 package mikhail_ryazanov.translator_task.translator.work_with_yandex;
 
-import java.util.List;
+import java.util.concurrent.Callable;
 
-public class RequestHandler implements Runnable {
+public class RequestHandler implements Callable<String> {
 
+    private String word;
     private String langPair;
-    private List<String> words;
     private String key;
     private String url;
 
-    public Thread t;
-
-    public RequestHandler(List<String> words,String langPair, String url, String key){
+    public RequestHandler(String word, String langPair, String key, String url) {
+        this.word = word;
         this.langPair = langPair;
-        this.words = words;
-        this.t = new Thread(this);
         this.key = key;
         this.url = url;
     }
 
     @Override
-    public void run() {
-        for (int i =0; i < words.size();i++){
-            words.set(i,YandexQueryTask.yandexQuery(words.get(i),langPair,url,key));
-        }
+    public String call() throws Exception {
+        return YandexQueryTask.yandexQuery(word,langPair,url,key);
     }
 
 }
